@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+struct Car {
+    var model: String
+    var year: Int
+}
+
 struct ContentView: View {
     var body: some View {
         VStack {
