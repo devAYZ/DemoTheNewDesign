@@ -11,10 +11,21 @@ import Playgrounds
 struct Student {
     var name: String
     var age: Int
+    
+    func networCallResponse(data: String, completion: ((Result<String, Error>) -> ())?) {
+        
+    }
+    
+}
+
+class StudentImplementation {
+    
 }
 
 #Playground {
     var boy = Student(name: "Ayo 2", age: 10)
     var car = Car(model: "Benz", year: 2025)
     print("devAYZ", boy.name, car)
+    
+    var boy2 = Student(name: "", age: 1)
 }
