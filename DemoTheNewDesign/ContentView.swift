@@ -14,6 +14,20 @@ struct Car {
 
 struct ContentView: View {
     
+    var body: some View {
+        VStack {
+            //MiniAnimation()
+            StateBackground()
+        }
+    }
+    
+}
+
+#Preview {
+    ContentView()
+}
+
+struct MiniAnimation: View {
     @State private var zoomed = false
     
     var body: some View {
@@ -36,9 +50,22 @@ struct ContentView: View {
         }
         .padding()
     }
-    
 }
 
-#Preview {
-    ContentView()
+struct StateBackground: View {
+    @State private var isOn = false
+    
+    var body: some View {
+        VStack {
+            Toggle(isOn: $isOn) {
+                Text(isOn ? "ON" : "OFF")
+            }
+            .fixedSize()
+            .padding(6)
+            .background(.white)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(isOn ? .green : .gray)
+    }
 }
+
