@@ -13,15 +13,30 @@ struct Car {
 }
 
 struct ContentView: View {
+    
+    @State private var zoomed = false
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Image("hara")
+                .resizable()
+//                .scaledToFit()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: zoomed ? 400 : 200)
+                .onTapGesture {
+                    withAnimation {
+                        zoomed.toggle()
+                    }
+                }
+            Text("Hara Picture")
+                .font(zoomed ? .largeTitle : .headline)
+                .privacySensitive()
+            //.contentC start listeningaptureProtected(true)
+            Spacer()
         }
         .padding()
     }
+    
 }
 
 #Preview {
