@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Playgrounds
 
 struct Car {
     var model: String
@@ -63,6 +64,7 @@ struct StateBackground: View {
             .fixedSize()
             .padding(6)
             .background(.white)
+            .clipShape(RoundedRectangle(cornerSize: .init(width: 16, height: .zero)))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(isOn ? .green : .gray)
