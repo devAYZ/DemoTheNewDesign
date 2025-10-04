@@ -22,27 +22,68 @@ struct HTTPClient {
         return try JSONDecoder()
             .decode([Product].self, from: data)
     }
+    
+    func getProductList2() async -> [Product] {
+        do {
+            let (data, _) = try await URLSession.shared
+                .data(from: .init(string: "https://api.escuelajs.co/api/v1/products")!)
+            do {
+                return try JSONDecoder()
+                    .decode([Product].self, from: data)
+            } catch {
+                
+            }
+        } catch {
+            
+        }
+        return []
+    }
 }
 
 struct ProductListView: View {
-    @State var productData: [Product]?
+    @State var productData: [Product] = []
+    @State var searchText: String = ""
+    
+    private func getProduct() async -> [Product] {
+        let data = try? await HTTPClient().getProductList()
+        return data ?? []
+    }
+    
+    private func getProduct2() async -> [Product] {
+        await HTTPClient().getProductList2()
+    }
     
     var body: some View {
         VStack {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        }
-        .task {
-            do {
-                let data = try await HTTPClient().getProductList()
-                print(data.first?.title ?? "-")
-                productData = data
-            } catch {
-                print(error.localizedDescription)
+            List(productData.sorted { $0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? "" }) { product in
+                Text(product.title ?? "")
             }
+        }
+
+        .searchable(text: $searchText, placement: .navigationBarDrawer)
+        .navigationTitle("Platzi Products")
+        .task {
+//            do {
+//                let data = try await HTTPClient().getProductList()
+//                print(data.first?.title ?? "-")
+//                productData = data
+//            }
+//            catch {
+//                print(error.localizedDescription)
+//            }
+            
+//            do {
+//                let data = await HTTPClient().getProductList2()
+//                print(data.first?.title ?? "-")
+//                productData = data
+//            }
+            productData = await getProduct()
         }
     }
 }
 
 #Preview {
-    ProductListView()
+    NavigationStack {
+        ProductListView()
+    }
 }
