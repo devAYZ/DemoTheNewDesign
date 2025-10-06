@@ -7,12 +7,19 @@
 
 import SwiftUI
 
-struct Product: Decodable, Identifiable, Equatable {
+struct Product: Decodable, Identifiable {
     var id: Int?
     var title: String?
     var slug: String?
     var price: Double?
     var description: String?
+}
+
+struct CreateAProduct: Encodable {
+    var title: String
+    var price: Double
+    var description: String
+    var categoryId: String?
 }
 
 struct HTTPClient {
@@ -37,6 +44,17 @@ struct HTTPClient {
             
         }
         return []
+    }
+    
+    func createProduct(requestObj: CreateAProduct) async throws -> Product? {
+        var request = URLRequest(url: .init(string: "https://api.escuelajs.co/api/v1/products")!)
+        
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(requestObj)
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
+        return try JSONDecoder().decode(Product.self, from: data)
     }
 }
 
